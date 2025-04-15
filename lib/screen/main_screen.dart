@@ -3,8 +3,6 @@ import 'package:image_gallery/screen/image_screen.dart';
 import 'package:image_gallery/screen/profile_screen.dart';
 import 'package:image_gallery/utility/app_colors.dart';
 
-import 'package:image_gallery/utility/box_decoration_orange.dart';
-
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -22,13 +20,19 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Meine Tier-Galerie"), backgroundColor: AppColors.orange300),
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(40.0),
+        child: AppBar(
+          title: Text("Meine Tier-Galerie"),
+          backgroundColor: AppColors.orange300,
+        ),
+      ),
       body: Center(child: _pages[_pageIndex]),
       bottomNavigationBar: Stack(
         children: [
           Container(
             height: kBottomNavigationBarHeight + 16,
-            decoration: boxDecorationOrange(), // Deine eigene Gradient-/Dekofunktion
+            color: AppColors.orange300,
           ),
           NavigationBarTheme(
             data: NavigationBarThemeData(

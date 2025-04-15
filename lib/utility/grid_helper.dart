@@ -17,7 +17,7 @@ class GridHelper {
     this.crossAxisCount = 2,
     this.ePerc = 5,
     this.ft = 2,
-    this.quotBH = 1400 / 742,
+    this.quotBH = 1400.0 / 742.0,
     this.spacingRelatedPerc = 1,
   }) {
     widthConstraints = constraints.maxWidth;

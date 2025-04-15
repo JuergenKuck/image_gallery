@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:image_gallery/screen/detail_screen.dart';
 import 'package:image_gallery/src/gallery.dart';
+import 'package:image_gallery/src/image_card.dart';
 import 'package:image_gallery/utility/app_colors.dart';
-import 'package:image_gallery/utility/box_decoration_blue.dart';
 import 'package:image_gallery/utility/grid_helper.dart';
-
-double pd = 0;
-double pd16 = 0;
 
 GridHelper gh = GridHelper();
 
@@ -16,19 +14,18 @@ class ImageScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    pd = MediaQuery.of(context).size.width / 616;
-    pd16 = pd * 8;
     return Container(
-      decoration: boxDecorationBlue(),
+      color: AppColors.orange100,
       child: Padding(
-        padding: EdgeInsets.all(pd16),
+        padding: EdgeInsets.all(8),
         child: LayoutBuilder(builder: (context, constraints) {
           gh = GridHelper(
             constraints: constraints,
-            crossAxisCount: 2,
-            ePerc: 5,
-            ft: 2,
-            quotBH: 1400 / 742,
+            crossAxisCount: 3,
+            ePerc: 2.5,
+            ft: 6,
+            quotBH: 1200 / 742,
+            spacingRelatedPerc: 0,
           );
           return GridView.count(
             crossAxisCount: gh.crossAxisCount,
@@ -49,53 +46,14 @@ class ImageScreen extends StatelessWidget {
       myWidgets.add(
         GestureDetector(
           onTap: () {
-            showDialog(
-              context: context,
-              builder: (context) {
-                return AlertDialog(
-                  content: Column(
-                    children: [
-                      Expanded(child: Image.asset(galleryItem.imagePath)),
-                      Text(galleryItem.imageDescription),
-                    ],
-                  ),
-                  actions: [
-                    TextButton(
-                      onPressed: () {
-                        Navigator.of(context).pop(); // Schließt den Dialog
-                      },
-                      child: Text("Schließen"),
-                    ),
-                  ],
-                );
-              },
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => DetailScreen(galleryItem: galleryItem)),
             );
           },
-          child: Card(
-            elevation: 10,
-            color: AppColors.backBlue,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.all(Radius.circular(pd * 16)),
-            ),
-            child: Stack(
-              children: [
-                //                  Expanded(
-                Container(
-                  color: AppColors.green500,
-                  width: gh.width,
-                  height: gh.height,
-                ),
-                /*
-                      child: Image.asset(
-                        galleryItem.imagePath,
-                        fit: BoxFit.contain, //fit: BoxFit.contain,
-            */
-
-                //                      ),
-                //                  ),
-                Text(galleryItem.imageTitle, style: TextStyle(fontSize: 13.68 * pd)),
-              ],
-            ),
+          child: ImageCard(
+            galleryItem: galleryItem,
+            gridHelper: gh,
           ),
         ),
       );
