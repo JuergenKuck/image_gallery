@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:image_gallery/src/gallery.dart';
 import 'package:image_gallery/utility/app_colors.dart';
 import 'package:image_gallery/utility/box_decoration_blue.dart';
-import 'package:image_gallery/utility/box_decoration_orange.dart';
+import 'package:image_gallery/utility/grid_helper.dart';
 
 double pd = 0;
 double pd16 = 0;
+
+GridHelper gh = GridHelper();
 
 class ImageScreen extends StatelessWidget {
   const ImageScreen({
@@ -15,18 +17,27 @@ class ImageScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     pd = MediaQuery.of(context).size.width / 616;
-    pd16 = pd * 16;
+    pd16 = pd * 8;
     return Container(
       decoration: boxDecorationBlue(),
       child: Padding(
         padding: EdgeInsets.all(pd16),
-        child: GridView.count(
-          crossAxisCount: 2,
-          childAspectRatio: 632 / 419,
-          mainAxisSpacing: pd16 / 2,
-          crossAxisSpacing: pd16 / 2,
-          children: buildImages(context),
-        ),
+        child: LayoutBuilder(builder: (context, constraints) {
+          gh = GridHelper(
+            constraints: constraints,
+            crossAxisCount: 2,
+            ePerc: 5,
+            ft: 2,
+            quotBH: 1400 / 742,
+          );
+          return GridView.count(
+            crossAxisCount: gh.crossAxisCount,
+            childAspectRatio: gh.aspectRatio,
+            mainAxisSpacing: gh.spacing,
+            crossAxisSpacing: gh.spacing,
+            children: buildImages(context),
+          );
+        }),
       ),
     );
   }
@@ -66,25 +77,24 @@ class ImageScreen extends StatelessWidget {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(pd * 16)),
             ),
-            child: Padding(
-              padding: EdgeInsets.only(top: pd * 8 / 0.6),
-              child: Column(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 0),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.all(Radius.circular(pd * 12)),
-                        child: Image.asset(
-                          galleryItem.imagePath,
-                          fit: BoxFit.contain, //fit: BoxFit.contain,
-                        ),
-                      ),
-                    ),
-                  ),
-                  Text(galleryItem.imageTitle, style: TextStyle(fontSize: 13.68 * pd)),
-                ],
-              ),
+            child: Stack(
+              children: [
+                //                  Expanded(
+                Container(
+                  color: AppColors.green500,
+                  width: gh.width,
+                  height: gh.height,
+                ),
+                /*
+                      child: Image.asset(
+                        galleryItem.imagePath,
+                        fit: BoxFit.contain, //fit: BoxFit.contain,
+            */
+
+                //                      ),
+                //                  ),
+                Text(galleryItem.imageTitle, style: TextStyle(fontSize: 13.68 * pd)),
+              ],
             ),
           ),
         ),
