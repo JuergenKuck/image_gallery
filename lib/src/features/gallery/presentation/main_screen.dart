@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:image_gallery/screen/image_screen.dart';
-import 'package:image_gallery/screen/profile_screen.dart';
-import 'package:image_gallery/utility/app_colors.dart';
+import 'package:image_gallery/src/features/gallery/presentation/image_screen.dart';
+import 'package:image_gallery/src/features/gallery/presentation/profile_screen.dart';
+import 'package:image_gallery/src/data/database_repository.dart';
+import 'package:image_gallery/src/theme/app_colors.dart';
 
 class MainScreen extends StatefulWidget {
-  const MainScreen({super.key});
+  final DatabaseRepository repository;
+
+  const MainScreen({super.key, required this.repository});
 
   @override
   State<MainScreen> createState() => _MainScreenState();
@@ -13,9 +16,16 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   // State
   int _pageIndex = 0;
-
-  final List<Widget> _pages = [Center(child: ImageScreen()), Center(child: ProfileScreen())];
+  List<Widget> _pages = [];
   // Methods
+  @override
+  void initState() {
+    _pages = [
+      Center(child: ImageScreen(repository: widget.repository)),
+      Center(child: ProfileScreen(repository: widget.repository))
+    ];
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,9 +61,9 @@ class _MainScreenState extends State<MainScreen> {
               }),
             ),
             child: NavigationBar(
-              height: kBottomNavigationBarHeight + 16,
+              height: kBottomNavigationBarHeight + 8,
               backgroundColor: Colors.transparent,
-              indicatorColor: AppColors.orange300, // Optional für aktives Icon
+              indicatorColor: AppColors.orange400, // Optional für aktives Icon
               labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
               selectedIndex: _pageIndex,
               onDestinationSelected: (int index) {

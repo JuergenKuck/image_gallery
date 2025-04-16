@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:image_gallery/src/gallery.dart';
-import 'package:image_gallery/src/image_card.dart';
-import 'package:image_gallery/utility/app_colors.dart';
-import 'package:image_gallery/utility/grid_helper.dart';
+import 'package:image_gallery/src/features/gallery/domain/gallery.dart';
+import 'package:image_gallery/src/common/image_card.dart';
+import 'package:image_gallery/src/theme/app_colors.dart';
+import 'package:image_gallery/src/common/grid_helper.dart';
 
 GridHelper gh = GridHelper();
 
@@ -37,14 +37,20 @@ class DetailScreen extends StatelessWidget {
                   quotBH: 1200 / 742,
                   spacingRelatedPerc: 0,
                 );
-                return ImageCard(
-                  galleryItem: galleryItem,
-                  gridHelper: gh,
+                return Hero(
+                  tag: galleryItem.imagePath,
+                  child: ImageCard(
+                    galleryItem: galleryItem,
+                    gridHelper: gh,
+                  ),
                 );
               }),
               Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text("${galleryItem.imageDescription}"),
+                padding: const EdgeInsets.all(16.0),
+                child: Text(
+                  galleryItem.imageDescription,
+                  style: TextStyle(color: AppColors.black, fontSize: 14),
+                ),
               ),
             ],
           ),

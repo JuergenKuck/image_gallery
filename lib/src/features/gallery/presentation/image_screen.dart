@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:image_gallery/screen/detail_screen.dart';
-import 'package:image_gallery/src/gallery.dart';
-import 'package:image_gallery/src/image_card.dart';
-import 'package:image_gallery/utility/app_colors.dart';
-import 'package:image_gallery/utility/grid_helper.dart';
+import 'package:image_gallery/src/data/database_repository.dart';
+import 'package:image_gallery/src/features/gallery/presentation/detail_screen.dart';
+import 'package:image_gallery/src/features/gallery/domain/gallery.dart';
+import 'package:image_gallery/src/common/image_card.dart';
+import 'package:image_gallery/src/theme/app_colors.dart';
+import 'package:image_gallery/src/common/grid_helper.dart';
 
 GridHelper gh = GridHelper();
 
 class ImageScreen extends StatelessWidget {
+  final DatabaseRepository repository;
+
   const ImageScreen({
     super.key,
+    required this.repository,
   });
 
   @override
@@ -21,7 +25,7 @@ class ImageScreen extends StatelessWidget {
         child: LayoutBuilder(builder: (context, constraints) {
           gh = GridHelper(
             constraints: constraints,
-            crossAxisCount: 3,
+            crossAxisCount: 2,
             ePerc: 2.5,
             ft: 6,
             quotBH: 1200 / 742,
@@ -42,7 +46,7 @@ class ImageScreen extends StatelessWidget {
   List<Widget> buildImages(BuildContext context) {
     List<Widget> myWidgets = [];
 
-    for (GalleryItem galleryItem in galleryItems) {
+    for (GalleryItem galleryItem in repository.getGalleryItems()) {
       myWidgets.add(
         GestureDetector(
           onTap: () {
@@ -51,9 +55,12 @@ class ImageScreen extends StatelessWidget {
               MaterialPageRoute(builder: (context) => DetailScreen(galleryItem: galleryItem)),
             );
           },
-          child: ImageCard(
-            galleryItem: galleryItem,
-            gridHelper: gh,
+          child: Hero(
+            tag: galleryItem.imagePath,
+            child: ImageCard(
+              galleryItem: galleryItem,
+              gridHelper: gh,
+            ),
           ),
         ),
       );

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:image_gallery/src/gallery.dart';
-import 'package:image_gallery/utility/app_colors.dart';
-import 'package:image_gallery/utility/grid_helper.dart';
+import 'package:image_gallery/src/features/gallery/domain/gallery.dart';
+import 'package:image_gallery/src/theme/app_colors.dart';
+import 'package:image_gallery/src/common/grid_helper.dart';
 
 class ImageCard extends StatelessWidget {
   final GalleryItem galleryItem;
@@ -19,25 +19,26 @@ class ImageCard extends StatelessWidget {
       elevation: 10,
       color: AppColors.backBlue,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.all(Radius.circular(0)),
+        borderRadius: BorderRadius.all(Radius.circular(gridHelper.e)),
       ),
       child: Column(
         children: [
           //                  Expanded(
           Padding(
             padding: EdgeInsets.only(left: gridHelper.e, right: gridHelper.e, top: gridHelper.e),
-            child: SizedBox(
-              width: gridHelper.width,
-              height: gridHelper.height - 8, //das gridViw ist genau um 8 Pixel weniger hoch, als gedacht
+            child: ClipRRect(
+              borderRadius: BorderRadius.all(Radius.circular(gridHelper.e / 2)),
               child: Image.asset(
-                height: gridHelper.height - 8,
+                height: gridHelper.height - 8, // s.o.
                 galleryItem.imagePath,
                 fit: BoxFit.contain, //fit: BoxFit.contain,
               ),
             ),
           ),
           Text(galleryItem.imageTitle,
-              overflow: TextOverflow.ellipsis, maxLines: 1, style: TextStyle(fontSize: gridHelper.et / 1.5)),
+              overflow: TextOverflow.ellipsis,
+              maxLines: 1,
+              style: TextStyle(color: AppColors.black, fontSize: gridHelper.et / 2)),
         ],
       ),
     );
