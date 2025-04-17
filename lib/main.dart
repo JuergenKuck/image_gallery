@@ -12,6 +12,7 @@ void main() {
   WidgetsFlutterBinding.ensureInitialized();
 
   if (Platform.isMacOS || Platform.isWindows || Platform.isLinux) {
+    /*
     setWindowTitle('Gallery App');
     double f = 1080 / 1920;
     double h0 = 850;
@@ -19,6 +20,7 @@ void main() {
     setWindowMinSize(Size(f * h0, h0));
     setWindowMaxSize(Size(f * h1, h1));
     setWindowFrame(Rect.fromLTWH(50, 50, f * h0, h0)); // 👈 Startgröße + Position
+    */
   }
 
   runApp(App(repository: repository));
